@@ -1,0 +1,24 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateSignatureTable extends Migration
+{
+    public function up()
+    {
+        Schema::create('signatures', function (Blueprint $table) {
+            $table->bigIncrements('id');
+
+            $table->string('key')->unique();
+            $table->string('handler');
+            $table->text('payload')->nullable();
+            $table->string('password')->nullable();
+            $table->boolean('one_time_link');
+            $table->dateTime('expiration_date');
+
+            $table->timestamps();
+        });
+    }
+}
