@@ -6,13 +6,27 @@
 
 Signature gives you the ability to create action links that can be used everywhere on your site (including emails).
 
-A simple url can be created by the example below. The first parameter is the class to execute the action when the user visits the link, the second parameter is an array that holds all the data to be provided to the action class.
+A simple url can be created by the example below. The first parameter is the class to execute the action when the user visits the link, the second parameter is an array that holds all the data to be provided to the action class. The payload automatically gets encrypted when entering the database.
 ```php 
 $url = SignatureFacade::make(Action::class, ['email' => 'person@example.com'])->get();
 
 ```
 The get() function returns a complete url based on the APP_URL in the .env file and the 'action_route' in the signature config
 
+Example action class:
+```php
+class Action 
+{
+    public function __invoke($payload)
+    {
+        // Action        
+
+        return redirect('login');
+    }
+}
+
+
+```
 ## Installation
 
 You can install the package via composer:

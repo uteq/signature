@@ -33,10 +33,12 @@ class ActionController
                 }
             }
 
-            $payload = json_decode(Crypt::decrypt($signature->payload), true);
-            $response = app($signature->handler)($payload);
+            $response = app($signature->handler)(json_decode(Crypt::decrypt($signature->payload), true));
             if ($signature->one_time_link) {
                 $signature->delete();
+            }
+            if ($response === null) {
+                return redirect('/');
             }
 
             return $response;
