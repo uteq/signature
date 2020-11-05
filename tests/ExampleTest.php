@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\Skeleton\Tests;
+namespace Uteq\Signature\Tests;
 
 class ExampleTest extends TestCase
 {

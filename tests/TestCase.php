@@ -1,10 +1,11 @@
 <?php
 
-namespace Spatie\Skeleton\Tests;
+namespace Uteq\Signature\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Spatie\Skeleton\SkeletonServiceProvider;
+use Psalm\Config;
+use Uteq\Signature\SignatureServiceProvider;
 
 class TestCase extends Orchestra
 {
@@ -12,15 +13,17 @@ class TestCase extends Orchestra
     {
         parent::setUp();
 
+        $this->app['config']->set('app.url', 'http://127.0.0.1');
+
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'Spatie\\Skeleton\\Database\\Factories\\'.class_basename($modelName).'Factory'
+            fn (string $modelName) => 'Uteq\\Signature\\Database\\Factories\\'.class_basename($modelName).'Factory'
         );
     }
 
     protected function getPackageProviders($app)
     {
         return [
-            SkeletonServiceProvider::class,
+            SignatureServiceProvider::class,
         ];
     }
 
@@ -33,9 +36,8 @@ class TestCase extends Orchestra
             'prefix' => '',
         ]);
 
-        /*
-        include_once __DIR__.'/../database/migrations/create_skeleton_table.php.stub';
-        (new \CreatePackageTable())->up();
-        */
+
+        include_once __DIR__.'/../database/migrations/create_signature_table.php.stub';
+        (new \CreateSignatureTable())->up();
     }
 }
