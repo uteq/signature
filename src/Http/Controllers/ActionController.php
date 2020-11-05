@@ -3,7 +3,6 @@
 
 namespace Uteq\Signature\Http\Controllers;
 
-
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
@@ -17,7 +16,7 @@ class ActionController
     {
         if (Str::isUuid($key)) {
             $signature = SignatureModel::all()->where('key', $key)->first();
-            if (!$signature) {
+            if (! $signature) {
                 abort(404);
             }
             if (now()->greaterThanOrEqualTo(Carbon::createFromTimeString($signature->expiration_date))) {
@@ -25,7 +24,7 @@ class ActionController
                 abort(404);
             }
             if (Request::method() === "POST") {
-                if (!Hash::check(Request::input('password'), $signature->password)) {
+                if (! Hash::check(Request::input('password'), $signature->password)) {
                     abort(403);
                 }
             } else {
@@ -39,11 +38,9 @@ class ActionController
             if ($signature->one_time_link) {
                 $signature->delete();
             }
+
             return $response;
         }
         abort(404);
-
-
     }
-
 }

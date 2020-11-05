@@ -4,8 +4,14 @@
 [![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/uteq/signature/run-tests?label=tests)](https://github.com/uteq/signature/actions?query=workflow%3Arun-tests+branch%3Amaster)
 [![Total Downloads](https://img.shields.io/packagist/dt/uteq/signature.svg?style=flat-square)](https://packagist.org/packages/uteq/signature)
 
+Signature gives you the ability to create action links that can be used everywhere on your site (including emails).
 
-Signature gives the user the ability to create link that can be use to perform action based on the variables and the class provided when generating the link
+A simple url can be created by the example below. The first parameter is the class to execute the action when the user visits the link, the second parameter is an array that holds all the data to be provided to the action class.
+```php 
+$url = SignatureFacade::make(Action::class, ['email' => 'person@example.com'])->get();
+
+```
+The get() function returns a complete url based on the APP_URL in the .env file and the 'action_route' in the signature config
 
 ## Installation
 
@@ -33,7 +39,7 @@ This is the contents of the published config file:
 return [
     /*
      * This will be the url Signature will use to handle the actions
-     * if the action_route is action the url will for example be https://example.com/action/<key>
+     * if the action_route is action the url will for example be https://example.com/action/{key}
      */
     'action_route' => '/action/{key}'
 ];
@@ -44,11 +50,16 @@ return [
 ``` php
 $url = SignatureFacade::make(Action::class)
 	->payload(['variable_1' => 'information', 'variable_2' => 'even more information'])
-	->expirationDate(now()->addWeeks(2))
+	->expirationDate(now()->addWeek())
 	->password('secretPassword')
 	->oneTimeLink()
 	->get();
 ```
+- payload(): Alternative way to pass variables to the link
+- expirationDate(): Option to allow you to specify the expiration date (defaults to 2 weeks from creating the link)
+- password(): Protects the link by asking for the password set in this function when using the link
+- oneTimeLink(): Deletes the link when the action has successfully executed
+- get(): Makes a complete url based on the APP_URL in the .env file and the 'action_route' in the signature config (defaults to /action/{key})
 
 Action class:
 ```php
@@ -85,6 +96,7 @@ Please review [our security policy](../../security/policy) on how to report secu
 ## Credits
 
 - [Stef van den Berg](https://github.com/stef1904berg)
+- [Nathan Jansen](https://github.com/uteq)
 - [All Contributors](../../contributors)
 
 ## License
