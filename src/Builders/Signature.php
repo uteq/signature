@@ -3,7 +3,6 @@
 
 namespace Uteq\Signature\Builders;
 
-
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Str;
@@ -30,6 +29,7 @@ class Signature
     public function payload(array $payload): Signature
     {
         $this->payload = $payload;
+
         return $this;
     }
 
@@ -40,6 +40,7 @@ class Signature
     public function expirationDate(Carbon $expirationDate): Signature
     {
         $this->expirationDate = $expirationDate;
+
         return $this;
     }
 
@@ -50,6 +51,7 @@ class Signature
     public function password(string $password): Signature
     {
         $this->password = $password;
+
         return $this;
     }
 
@@ -60,6 +62,7 @@ class Signature
     public function oneTimeLink(): Signature
     {
         $this->oneTimeLink = true;
+
         return $this;
     }
 
@@ -83,7 +86,7 @@ class Signature
 
         $signature->save();
         $url = config("app.url") . Str::replaceFirst('{key}', $key, config('signature.action_route'));
+
         return $url;
     }
-
 }

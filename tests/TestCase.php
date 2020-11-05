@@ -4,7 +4,6 @@ namespace Uteq\Signature\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Psalm\Config;
 use Uteq\Signature\SignatureServiceProvider;
 
 class TestCase extends Orchestra
