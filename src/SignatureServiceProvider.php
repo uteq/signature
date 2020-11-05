@@ -33,7 +33,7 @@ class SignatureServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'signature');
 
-        \Illuminate\Support\Facades\Route::match(array('GET', 'POST'), config('signature.action_route'), ActionController::class);
+        \Illuminate\Support\Facades\Route::match(['GET', 'POST'], config('signature.action_route'), ActionController::class);
     }
 
     public function register()
