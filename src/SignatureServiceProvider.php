@@ -2,12 +2,12 @@
 
 namespace Uteq\Signature;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Uteq\Signature\Commands\SignatureCommand;
 use Uteq\Signature\Http\Controllers\ActionController;
 use Uteq\Signature\Http\Controllers\ValidateActionPasswordController;
 use Uteq\Signature\Models\SignatureModel;
-use Illuminate\Support\Facades\Route;
 
 class SignatureServiceProvider extends ServiceProvider
 {

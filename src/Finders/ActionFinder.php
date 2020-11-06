@@ -15,6 +15,7 @@ class ActionFinder
         if (class_exists(config('signature.actions.' . $handler))) {
             return config('signature.actions.' . $handler);
         }
+
         throw new ActionNotFoundException("[Signature] Could not find" . $handler . " in the config (signature.actions)");
     }
 }
