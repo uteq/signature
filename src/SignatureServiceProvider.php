@@ -5,6 +5,9 @@ namespace Uteq\Signature;
 use Illuminate\Support\ServiceProvider;
 use Uteq\Signature\Commands\SignatureCommand;
 use Uteq\Signature\Http\Controllers\ActionController;
+use Uteq\Signature\Http\Controllers\ValidateActionPasswordController;
+use Uteq\Signature\Models\SignatureModel;
+use Illuminate\Support\Facades\Route;
 
 class SignatureServiceProvider extends ServiceProvider
 {
@@ -33,7 +36,12 @@ class SignatureServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'signature');
 
-        \Illuminate\Support\Facades\Route::match(['GET', 'POST'], config('signature.action_route'), ActionController::class);
+        Route::bind('signature', function ($value) {
+            return SignatureModel::query()->where('key', $value)->firstOrFail();
+        });
+
+        Route::get(config('signature.action_route'), ActionController::class)->middleware('web')->name('signature.action_route');
+        Route::post(config('signature.validate_password_route'), ValidateActionPasswordController::class)->middleware('web')->name('signature.validate_password_route');
     }
 
     public function register()

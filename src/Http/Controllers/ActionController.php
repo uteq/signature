@@ -8,41 +8,28 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Str;
+use Uteq\Signature\Actions\FindSignatureAction;
+use Uteq\Signature\Actions\HandleSignatureAction;
+use Uteq\Signature\Exceptions\ActionNotFoundException;
+use Uteq\Signature\Finders\ActionFinder;
 use Uteq\Signature\Models\SignatureModel;
 
 class ActionController
 {
-    public function __invoke($key)
+    public function __invoke(SignatureModel $signature)
     {
-        if (Str::isUuid($key)) {
-            $signature = SignatureModel::all()->where('key', $key)->first();
-            if (! $signature) {
-                abort(404);
-            }
-            if (now()->greaterThanOrEqualTo(Carbon::createFromTimeString($signature->expiration_date))) {
-                $signature->delete();
-                abort(404);
-            }
-            if (Request::method() === "POST") {
-                if (! Hash::check(Request::input('password'), $signature->password)) {
-                    abort(403);
-                }
-            } else {
-                if ($signature->password !== null) {
-                    return view('signature::password-input');
-                }
-            }
-
-            $response = app($signature->handler)(json_decode(Crypt::decrypt($signature->payload), true));
-            if ($signature->one_time_link) {
-                $signature->delete();
-            }
-            if ($response === null) {
-                return redirect('/');
-            }
-
-            return $response;
+        if ($signature->isExpired()) {
+            $signature->delete();
+            abort(404);
         }
-        abort(404);
+
+        $handler = app(FindSignatureAction::class)($signature);
+
+        if ($signature->password !== null && ! session('signature.validated.' . $signature->key)) {
+            return view('signature::password-input', ['key' => $signature->key]);
+        }
+
+        return app(HandleSignatureAction::class)($signature, $handler);
+
     }
 }

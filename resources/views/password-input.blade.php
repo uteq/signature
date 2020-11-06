@@ -14,18 +14,18 @@
 <body class="bg-dark">
 
 
-<form class="form mt-2 center" action="" method="post">
-    <div class="form-group w-25 m-5">
-        <label for="password-input" class="text-white">This link is protected with a password</label>
-        <input id="password-input"  class="form-control" type="password" placeholder="Password" name="password"/>
+<form class="form mt-2 center" action="{{ route('signature.validate_password_route', $key) }}" method="post">
+    <div class="form-group m-5 mx-auto" style="max-width: 300px">
+        <label for="password-input" class="text-white">Please provide the given password</label>
+        <input id="password-input" class="form-control" type="password" placeholder="Password" name="password"/>
+        @error('password')
+            <div class="text-danger">{{ $message }}</div>
+        @enderror
+        <input type="submit" class="form-control mt-2 btn btn-primary" value="Submit">
     </div>
-
+    @csrf
 
 </form>
-
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-        crossorigin="anonymous"></script>
 
 </body>
 </html>

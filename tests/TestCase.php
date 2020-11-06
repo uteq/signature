@@ -3,6 +3,7 @@
 namespace Uteq\Signature\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Uteq\Signature\SignatureServiceProvider;
 
@@ -13,9 +14,10 @@ class TestCase extends Orchestra
         parent::setUp();
 
         $this->app['config']->set('app.url', 'http://127.0.0.1');
+        $this->app['config']->set('app.key', 'base64:vRKyP88/TPfeQKjibHMXufX3REU+T4TCGONzI/ZMUfk=');
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'Uteq\\Signature\\Database\\Factories\\'.class_basename($modelName).'Factory'
+            fn (string $modelName) => 'Uteq\\SignatureTest\\Database\\Factories\\'.class_basename($modelName).'Factory'
         );
     }
 
@@ -28,12 +30,9 @@ class TestCase extends Orchestra
 
     public function getEnvironmentSetUp($app)
     {
-        $app['config']->set('database.default', 'sqlite');
-        $app['config']->set('database.connections.sqlite', [
-            'driver' => 'sqlite',
-            'database' => ':memory:',
-            'prefix' => '',
-        ]);
+        Schema::dropAllTables();
+
+        $app['config']->set('session.driver', 'file');
 
 
         include_once __DIR__.'/../database/migrations/create_signature_table.php.stub';

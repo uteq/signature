@@ -55,7 +55,23 @@ return [
      * This will be the url Signature will use to handle the actions
      * if the action_route is action the url will for example be https://example.com/action/{key}
      */
-    'action_route' => '/action/{key}'
+    'action_route' => '/action/{key}',
+    
+    /*
+    * When hidden actions is true Signature wont use the class string as a handler but a string that is devined in the actions
+    * config below hiddne_actions. You cant still put a class string into the handler but it will not work if the same key is not
+    * found in actions
+    */
+    'hidden_actions' => false,
+    
+    /*
+    * Here you can define the actions, for example: 'action => '\App\SignatureActions\Action'
+    * When making a url you will need to provide the key instead of the class path, in the example above it would look like
+    * SignatureFacade::make('action', [])->get();
+    */
+    'actions' => [
+        
+    ]
 ];
 ```
 

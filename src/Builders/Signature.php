@@ -3,7 +3,7 @@
 
 namespace Uteq\Signature\Builders;
 
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Str;
 
@@ -85,7 +85,7 @@ class Signature
         $signature->one_time_link = $this->oneTimeLink;
 
         $signature->save();
-        $url = config("app.url") . Str::replaceFirst('{key}', $key, config('signature.action_route'));
+        $url = config("app.url") . Str::replaceFirst('{signature}', $key, config('signature.action_route'));
 
         return $url;
     }
