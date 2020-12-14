@@ -17,7 +17,7 @@ class TestCase extends Orchestra
         $this->app['config']->set('app.key', 'base64:vRKyP88/TPfeQKjibHMXufX3REU+T4TCGONzI/ZMUfk=');
 
         Factory::guessFactoryNamesUsing(
-            fn(string $modelName) => 'Uteq\\SignatureTest\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
+            fn (string $modelName) => 'Uteq\\SignatureTest\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
         );
     }
 

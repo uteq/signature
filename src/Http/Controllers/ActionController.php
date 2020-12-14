@@ -17,11 +17,11 @@ class ActionController
             abort(404);
         }
 
-        if (!app(FindSignatureAction::class)($signature)) {
+        if (! app(FindSignatureAction::class)($signature)) {
             abort(404);
         }
 
-        if ($signature->password !== null && !session('signature.validated.' . $signature->key)) {
+        if ($signature->password !== null && ! session('signature.validated.' . $signature->key)) {
             return view('signature::password-input', ['key' => $signature->key]);
         }
 
