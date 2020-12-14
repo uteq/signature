@@ -3,7 +3,6 @@
 
 namespace Uteq\Signature\Actions;
 
-
 use Uteq\Signature\Models\SignatureModel;
 
 class DeleteSignatureAction
@@ -16,5 +15,4 @@ class DeleteSignatureAction
             $signature->delete();
         }
     }
-
 }

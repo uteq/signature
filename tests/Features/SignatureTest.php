@@ -15,9 +15,9 @@ class SignatureTest extends TestCase
     public function getKey(string $url)
     {
         $array = explode("/", $url);
+
         return array_pop($array);
     }
-
 
     /** @test */
     public function signature_generate_key()
@@ -175,9 +175,5 @@ class SignatureTest extends TestCase
         $this->artisan('signature:clean')->expectsOutput('Deleted all expired signatures');
 
         $this->assertDatabaseCount('signatures', 0);
-
     }
-
-
-
 }

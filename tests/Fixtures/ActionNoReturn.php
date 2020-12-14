@@ -7,6 +7,5 @@ class ActionNoReturn
 {
     public function __invoke($payload)
     {
-
     }
 }
