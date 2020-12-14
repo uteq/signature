@@ -70,7 +70,7 @@ class Signature
         return $this;
     }
 
-    public function longerKey(int $keyLenght = 64)
+    public function longerKey(int $keyLenght = 64): Signature
     {
         $this->longerKeyLenght = ($keyLenght > 254) ? 254 : $keyLenght;
         $this->longerKey = true;
@@ -78,7 +78,7 @@ class Signature
         return $this;
     }
 
-    public function group(string $groupName)
+    public function group(string $groupName): Signature
     {
         $this->group = true;
         $this->groupName = $groupName;
@@ -91,7 +91,7 @@ class Signature
         $signature = new \Uteq\Signature\Models\SignatureModel();
 
         if ($this->longerKey) {
-            $key = bin2hex(openssl_random_pseudo_bytes(round($this->longerKeyLenght / 2)));
+            $key = bin2hex(openssl_random_pseudo_bytes(intval(round($this->longerKeyLenght / 2))));
         } else {
             $key = (string)Str::uuid();
         }

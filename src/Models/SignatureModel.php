@@ -11,17 +11,15 @@ class SignatureModel extends Model
 {
     use HasFactory;
 
-    public $guarded = ['id'];
-
     public $table = 'signatures';
     protected $dates = ['expiration_date'];
 
-    public function isExpired()
+    public function isExpired(): bool
     {
         return now()->greaterThanOrEqualTo($this->expiration_date);
     }
 
-    protected static function newFactory()
+    protected static function newFactory(): SignatureModelFactory
     {
         return SignatureModelFactory::new();
     }

@@ -18,11 +18,11 @@ class TestCase extends Orchestra
         $this->app['config']->set('app.key', 'base64:vRKyP88/TPfeQKjibHMXufX3REU+T4TCGONzI/ZMUfk=');
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'Uteq\\SignatureTest\\Database\\Factories\\'.class_basename($modelName).'Factory'
+            fn(string $modelName) => 'Uteq\\SignatureTest\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
         );
     }
 
-    protected function getPackageProviders($app)
+    protected function getPackageProviders($app): array
     {
         return [
             SignatureServiceProvider::class,
@@ -36,7 +36,7 @@ class TestCase extends Orchestra
         $app['config']->set('session.driver', 'file');
 
 
-        include_once __DIR__.'/../database/migrations/create_signature_table.php.stub';
+        include_once __DIR__ . '/../database/migrations/create_signature_table.php.stub';
         (new \CreateSignatureTable())->up();
     }
 }

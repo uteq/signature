@@ -10,7 +10,7 @@ class SignatureModelFactory extends Factory
 {
     protected $model = SignatureModel::class;
 
-    public function definition()
+    public function definition(): array
     {
         return [
             'key' => $this->faker->uuid,
