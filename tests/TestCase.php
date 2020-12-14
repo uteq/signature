@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Uteq\Signature\SignatureServiceProvider;
+use Uteq\Signature\Tests\Fixtures\Action;
 
 class TestCase extends Orchestra
 {

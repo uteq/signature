@@ -14,6 +14,6 @@ return [
     * SignatureFacade::make('action', [])->get();
     */
     'actions' => [
-        'show-text' => 'App\SignatureActions\ShowText',
+
     ],
 ];

@@ -14,6 +14,10 @@ class Signature
     private Carbon $expirationDate;
     private ?string $password = null;
     private bool $oneTimeLink = false;
+    private bool $longerKey = false;
+    private int $longerKeyLenght = 64;
+    private bool $group = false;
+    private string $groupName;
 
     public function __construct($handler, $payload)
     {
@@ -66,11 +70,35 @@ class Signature
         return $this;
     }
 
+    public function longerKey(int $keyLenght = 64)
+    {
+        $this->longerKeyLenght = ($keyLenght > 254) ? 254 : $keyLenght;
+        $this->longerKey = true;
+
+        return $this;
+    }
+
+    public function group(string $groupName)
+    {
+        $this->group = true;
+        $this->groupName = $groupName;
+
+        return $this;
+    }
+
     public function get(): string
     {
         $signature = new \Uteq\Signature\Models\SignatureModel();
 
-        $key = (string) Str::uuid();
+        if ($this->longerKey) {
+            $key = bin2hex(openssl_random_pseudo_bytes(round($this->longerKeyLenght / 2)));
+        } else {
+            $key = (string)Str::uuid();
+        }
+
+        if ($this->group) {
+            $signature->group = $this->groupName;
+        }
 
         $signature->key = $key;
         $signature->handler = $this->handler;
@@ -85,8 +113,7 @@ class Signature
         $signature->one_time_link = $this->oneTimeLink;
 
         $signature->save();
-        $url = config("app.url") . Str::replaceFirst('{signature}', $key, config('signature.action_route'));
 
-        return $url;
+        return config("app.url") . Str::replaceFirst('{signature}', $key, config('signature.action_route'));
     }
 }

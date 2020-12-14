@@ -8,7 +8,7 @@ Signature gives you the ability to create action links that can be used everywhe
 
 A simple url can be created by the example below. The first parameter is the class to execute the action when the user visits the link, the second parameter is an array that holds all the data to be provided to the action class. The payload automatically gets encrypted when entering the database.
 ```php 
-$url = SignatureFacade::make(Action::class, ['email' => 'person@example.com'])->get();
+$url = SignatureFacade::make(Action::class, ['email' => 'dirk@example.com'])->get();
 
 ```
 The get() function returns a complete url based on the APP_URL in the .env file and the 'action_route' in the signature config
@@ -19,7 +19,7 @@ class Action
 {
     public function __invoke($payload)
     {
-        // Action        
+        // Do something      
 
         return redirect('login');
     }
@@ -58,16 +58,9 @@ return [
     'action_route' => '/action/{key}',
     
     /*
-    * When hidden actions is true Signature wont use the class string as a handler but a string that is devined in the actions
-    * config below hiddne_actions. You cant still put a class string into the handler but it will not work if the same key is not
-    * found in actions
-    */
-    'hidden_actions' => false,
-    
-    /*
     * Here you can define the actions, for example: 'action => '\App\SignatureActions\Action'
-    * When making a url you will need to provide the key instead of the class path, in the example above it would look like
-    * SignatureFacade::make('action', [])->get();
+    * When making a url you can provide the key instead of the class path, when using the example above it would look like
+    * SignatureFacade::make('action', $payload)->get();
     */
     'actions' => [
         
@@ -76,7 +69,7 @@ return [
 ```
 
 ## Usage
-  You can create a link with the example provided below. 
+  You can create a link with the examples provided below. 
 ``` php
 $url = SignatureFacade::make(Action::class)
 	->payload(['variable_1' => 'information', 'variable_2' => 'even more information'])
@@ -84,12 +77,20 @@ $url = SignatureFacade::make(Action::class)
 	->password('secretPassword')
 	->oneTimeLink()
 	->get();
+
+$longerKeyUrl = SingatureFacade::make(Action::class)
+    ->longerKey(64)
+    ->group('1234')
+    ->get();
 ```
 - payload(): Alternative way to pass variables to the link
 - expirationDate(): Option to allow you to specify the expiration date (defaults to 2 weeks from creating the link)
 - password(): Protects the link by asking for the password set in this function when using the link
 - oneTimeLink(): Deletes the link when the action has successfully executed
 - get(): Makes a complete url based on the APP_URL in the .env file and the 'action_route' in the signature config (defaults to /action/{key})
+
+- longerKey(): uses a longer key in the url with changeable length (max 254), this makes it even harder to randomly generate the url. This is recommended when using data that is more important.
+- group(): groups 2 or more signatures together via the string given to the function, when a signature is deleted all signatures within the same group will also get deleted.
 
 Action class:
 ```php
@@ -103,6 +104,13 @@ class Action
     }
 
 }
+```
+
+## Commands
+
+This command deletes all the signatures that have expired.
+```bash
+php artisan signature:clean
 ```
 
 ## Testing

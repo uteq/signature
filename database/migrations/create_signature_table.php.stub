@@ -15,6 +15,7 @@ class CreateSignatureTable extends Migration
             $table->string('handler');
             $table->text('payload')->nullable();
             $table->string('password')->nullable();
+            $table->string('group')->nullable();
             $table->boolean('one_time_link');
             $table->dateTime('expiration_date');
 

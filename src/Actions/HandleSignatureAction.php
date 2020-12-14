@@ -13,7 +13,7 @@ class HandleSignatureAction
         $response = app($handler)(json_decode(Crypt::decrypt($signature->payload), true));
 
         if ($signature->one_time_link) {
-            $signature->delete();
+            app(DeleteSignatureAction::class)($signature);
         }
         if ($response === null) {
             return redirect('/');
