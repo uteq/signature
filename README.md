@@ -75,7 +75,7 @@ $url = SignatureFacade::make(Action::class)
     ->oneTimeLink()
     ->get();
 
-$longerKeyUrl = SingatureFacade::make(Action::class)
+$longerKeyUrl = SignatureFacade::make(Action::class)
     ->longerKey(64)
     ->group('1234')
     ->get();
