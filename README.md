@@ -4,7 +4,7 @@
 [![Tests](https://github.com/uteq/signature/workflows/Tests/badge.svg)](https://github.com/uteq/signature/actions?query=workflow%3ATests+branch%3Amaster)
 [![Total Downloads](https://img.shields.io/packagist/dt/uteq/signature.svg)](https://packagist.org/packages/uteq/signature)
 
-Signature gives you the ability to create action links that can be used everywhere on your site (including emails).
+This laravel package gives you the ability to create action links that can be used everywhere on your site (including emails).
 
 A simple url can be created by the example below. The first parameter is the class to execute the action when the user visits the link, the second parameter is an array that holds all the data to be provided to the action class. The payload automatically gets encrypted when entering the database.
 ```php 
