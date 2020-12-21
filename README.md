@@ -1,8 +1,8 @@
 # Signature
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/uteq/signature.svg?style=flat-square)](https://packagist.org/packages/uteq/signature)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/uteq/signature/run-tests?label=tests)](https://github.com/uteq/signature/actions?query=workflow%3Arun-tests+branch%3Amaster)
-[![Total Downloads](https://img.shields.io/packagist/dt/uteq/signature.svg?style=flat-square)](https://packagist.org/packages/uteq/signature)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/uteq/signature.svg)](https://packagist.org/packages/uteq/signature)
+[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/uteq/signature/run-tests?label=tests)](https://github.com/uteq/signature/actions?query=workflow%3ATests+branch%3Amaster)
+[![Total Downloads](https://img.shields.io/packagist/dt/uteq/signature.svg)](https://packagist.org/packages/uteq/signature)
 
 Signature gives you the ability to create action links that can be used everywhere on your site (including emails).
 
