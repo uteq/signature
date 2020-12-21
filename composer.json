@@ -1,6 +1,6 @@
 {
     "name": "uteq/signature",
-    "description": "Cool spul",
+    "description": "A Package that gives the ability to create (temporary) links for usage on websites, emails and more",
     "keywords": [
         "uteq",
         "signature"

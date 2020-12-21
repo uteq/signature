@@ -26,10 +26,6 @@ class Signature
         $this->expirationDate = now()->addWeeks(2);
     }
 
-    /**
-     * @param array $payload
-     * @return Signature
-     */
     public function payload(array $payload): Signature
     {
         $this->payload = $payload;
@@ -37,10 +33,6 @@ class Signature
         return $this;
     }
 
-    /**
-     * @param Carbon $expirationDate
-     * @return Signature
-     */
     public function expirationDate(Carbon $expirationDate): Signature
     {
         $this->expirationDate = $expirationDate;
@@ -48,10 +40,6 @@ class Signature
         return $this;
     }
 
-    /**
-     * @param string $password
-     * @return Signature
-     */
     public function password(string $password): Signature
     {
         $this->password = $password;
@@ -59,10 +47,6 @@ class Signature
         return $this;
     }
 
-    /**
-     * @param bool $oneTimeLink
-     * @return Signature
-     */
     public function oneTimeLink(): Signature
     {
         $this->oneTimeLink = true;

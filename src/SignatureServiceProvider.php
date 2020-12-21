@@ -14,31 +14,45 @@ class SignatureServiceProvider extends ServiceProvider
     public function boot(): void
     {
         if ($this->app->runningInConsole()) {
-            $this->publishes([
+            $this->publishes(
+                [
                 __DIR__ . '/../config/signature.php' => config_path('signature.php'),
-            ], 'config');
+                ],
+                'config'
+            );
 
-            $this->publishes([
+            $this->publishes(
+                [
                 __DIR__ . '/../resources/views' => base_path('resources/views/vendor/signature'),
-            ], 'views');
+                ],
+                'views'
+            );
 
             $migrationFileName = 'create_signature_table.php';
             if (! $this->migrationFileExists($migrationFileName)) {
-                $this->publishes([
+                $this->publishes(
+                    [
                     __DIR__ . "/../database/migrations/{$migrationFileName}.stub" => database_path('migrations/' . date('Y_m_d_His', time()) . '_' . $migrationFileName),
-                ], 'migrations');
+                    ],
+                    'migrations'
+                );
             }
 
-            $this->commands([
+            $this->commands(
+                [
                 SignatureCommand::class,
-            ]);
+                ]
+            );
         }
 
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'signature');
 
-        Route::bind('signature', function ($value) {
-            return SignatureModel::query()->where('key', $value)->firstOrFail();
-        });
+        Route::bind(
+            'signature',
+            function ($value) {
+                return SignatureModel::query()->where('key', $value)->firstOrFail();
+            }
+        );
 
         Route::get(config('signature.action_route'), ActionController::class)->middleware('web')->name('signature.action_route');
         Route::post(config('signature.validate_password_route'), ValidateActionPasswordController::class)->middleware('web')->name('signature.validate_password_route');

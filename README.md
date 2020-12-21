@@ -9,7 +9,6 @@ Signature gives you the ability to create action links that can be used everywhe
 A simple url can be created by the example below. The first parameter is the class to execute the action when the user visits the link, the second parameter is an array that holds all the data to be provided to the action class. The payload automatically gets encrypted when entering the database.
 ```php 
 $url = SignatureFacade::make(Action::class, ['email' => 'dirk@example.com'])->get();
-
 ```
 The get() function returns a complete url based on the APP_URL in the .env file and the 'action_route' in the signature config
 
@@ -24,8 +23,6 @@ class Action
         return redirect('login');
     }
 }
-
-
 ```
 ## Installation
 
@@ -72,11 +69,11 @@ return [
   You can create a link with the examples provided below. 
 ``` php
 $url = SignatureFacade::make(Action::class)
-	->payload(['variable_1' => 'information', 'variable_2' => 'even more information'])
-	->expirationDate(now()->addWeek())
-	->password('secretPassword')
-	->oneTimeLink()
-	->get();
+    ->payload(['variable_1' => 'information', 'variable_2' => 'even more information'])
+    ->expirationDate(now()->addWeek())
+    ->password('secretPassword')
+    ->oneTimeLink()
+    ->get();
 
 $longerKeyUrl = SingatureFacade::make(Action::class)
     ->longerKey(64)
@@ -89,8 +86,8 @@ $longerKeyUrl = SingatureFacade::make(Action::class)
 - oneTimeLink(): Deletes the link when the action has successfully executed
 - get(): Makes a complete url based on the APP_URL in the .env file and the 'action_route' in the signature config (defaults to /action/{key})
 
-- longerKey(): uses a longer key in the url with changeable length (max 254), this makes it even harder to randomly generate the url. This is recommended when using data that is more important.
-- group(): groups 2 or more signatures together via the string given to the function, when a signature is deleted all signatures within the same group will also get deleted.
+- longerKey(): uses a longer key in the url with changeable length (max 254). This is recommended when handling sensitive data.
+- group(): groups signatures together via the string given to the function, when a signature is deleted, all signatures with the same group also get deleted.
 
 Action class:
 ```php

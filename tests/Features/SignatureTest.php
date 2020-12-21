@@ -12,7 +12,7 @@ use Uteq\Signature\Tests\TestCase;
 
 class SignatureTest extends TestCase
 {
-    public function getKey(string $url)
+    public function getKey(string $url): string
     {
         $array = explode("/", $url);
 
@@ -169,11 +169,12 @@ class SignatureTest extends TestCase
     /** @test */
     public function signature_clean_command_deletes_all_signatures_that_are_expired()
     {
-        SignatureModel::factory(['expiration_date' => now()->subWeek()])->count(10)->create();
+        SignatureModel::factory(['expiration_date' => now()->subWeek()])->count(5)->create();
+        SignatureModel::factory(['expiration_date' => now()->addWeek()])->count(5)->create();
 
         $this->assertDatabaseCount('signatures', 10);
         $this->artisan('signature:clean')->expectsOutput('Deleted all expired signatures');
 
-        $this->assertDatabaseCount('signatures', 0);
+        $this->assertDatabaseCount('signatures', 5);
     }
 }
