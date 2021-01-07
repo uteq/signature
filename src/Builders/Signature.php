@@ -6,6 +6,9 @@ namespace Uteq\Signature\Builders;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Str;
+use Uteq\Signature\Actions\KeyExists;
+use Uteq\Signature\Exceptions\KeyAlreadyExists;
+use Uteq\Signature\Exceptions\KeyIsTooLong;
 
 class Signature
 {
@@ -18,6 +21,8 @@ class Signature
     private int $longerKeyLenght = 64;
     private bool $group = false;
     private string $groupName;
+    private bool $customKey = false;
+    private string $customKeyName;
 
     public function __construct($handler, $payload)
     {
@@ -58,6 +63,18 @@ class Signature
     {
         $this->longerKeyLenght = ($keyLenght > 254) ? 254 : $keyLenght;
         $this->longerKey = true;
+        $this->customKey = false;
+
+        return $this;
+    }
+
+    public function customKey(string $customKeyName)
+    {
+        throw_if(app(KeyExists::class)($customKeyName), new KeyAlreadyExists("[Signature] Key '". $customKeyName."' already exists"));
+        throw_if(strlen($customKeyName) > 254, new KeyIsTooLong("[Signature] Custom key exceeds character limit of 254"));
+        $this->customKey = true;
+        $this->longerKey = false;
+        $this->customKeyName = $customKeyName;
 
         return $this;
     }
@@ -70,15 +87,24 @@ class Signature
         return $this;
     }
 
+    private function getKey()
+    {
+        if ($this->longerKey) {
+            $key = bin2hex(openssl_random_pseudo_bytes(intval(round($this->longerKeyLenght / 2))));
+        } elseif ($this->customKey) {
+            $key = $this->customKeyName;
+        } else {
+            $key = (string)Str::uuid();
+        }
+        if(app(KeyExists::class)($key)) { return $this->getKey();};
+        return $key;
+    }
+
     public function get(): string
     {
         $signature = new \Uteq\Signature\Models\SignatureModel();
 
-        if ($this->longerKey) {
-            $key = bin2hex(openssl_random_pseudo_bytes(intval(round($this->longerKeyLenght / 2))));
-        } else {
-            $key = (string)Str::uuid();
-        }
+        $key = $this->getKey();
 
         if ($this->group) {
             $signature->group = $this->groupName;

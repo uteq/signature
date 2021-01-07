@@ -68,16 +68,20 @@ return [
 ## Usage
   You can create a link with the examples provided below. 
 ``` php
-$url = SignatureFacade::make(Action::class)
+$urlExample = SignatureFacade::make(Action::class)
     ->payload(['variable_1' => 'information', 'variable_2' => 'even more information'])
     ->expirationDate(now()->addWeek())
     ->password('secretPassword')
     ->oneTimeLink()
     ->get();
 
-$longerKeyUrl = SignatureFacade::make(Action::class)
+$longerKeyUrlExample = SignatureFacade::make(Action::class)
     ->longerKey(64)
     ->group('1234')
+    ->get();
+    
+$customKeyExample = SignatureFacade::make(Action::class)
+    ->customKey('veryCoolCustomKey')
     ->get();
 ```
 - payload(): Alternative way to pass variables to the link
@@ -88,6 +92,8 @@ $longerKeyUrl = SignatureFacade::make(Action::class)
 
 - longerKey(): uses a longer key in the url with changeable length (max 254). This is recommended when handling sensitive data.
 - group(): groups signatures together via the string given to the function, when a signature is deleted, all signatures with the same group also get deleted.
+
+- customKey(): grants the ability to use a custom key, if both longerKey() and customKey() are used in the same signature, the last function will override the other.
 
 Action class:
 ```php

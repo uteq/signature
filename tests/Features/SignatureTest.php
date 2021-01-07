@@ -4,6 +4,8 @@
 namespace Uteq\Signature\Tests\Features;
 
 use Illuminate\Support\Facades\Config;
+use Uteq\Signature\Exceptions\KeyAlreadyExists;
+use Uteq\Signature\Exceptions\KeyIsTooLong;
 use Uteq\Signature\Models\SignatureModel;
 use Uteq\Signature\SignatureFacade;
 use Uteq\Signature\Tests\Fixtures\Action;
@@ -22,10 +24,7 @@ class SignatureTest extends TestCase
     /** @test */
     public function signature_generate_key()
     {
-        $payload = [
-            'test' => 'test1',
-            'test2' => 'test3',
-        ];
+        $payload = ['test' => 'Generate key',];
         $url = SignatureFacade::make(Action::class, $payload)->get();
         $this->assertTrue(is_string($url));
         $this->get($url)->assertOk()->assertJson($payload);
@@ -176,5 +175,68 @@ class SignatureTest extends TestCase
         $this->artisan('signature:clean')->expectsOutput('Deleted all expired signatures');
 
         $this->assertDatabaseCount('signatures', 5);
+    }
+
+    /** @test */
+    public function signature_can_use_custom_key_name()
+    {
+        $payload = ['test' => 'Custom key'];
+        $url = SignatureFacade::make(Action::class)
+            ->payload($payload)
+            ->customKey('veryCoolCustomKey')
+            ->get();
+
+        $this->assertDatabaseHas('signatures', ['key' => 'veryCoolCustomKey']);
+
+        $this->get($url)->assertOk()->assertJson($payload);
+
+    }
+
+    /** @test */
+    public function signature_cant_create_two_the_same_keys()
+    {
+        $payload = ['test' => 'Custom key'];
+        SignatureFacade::make(Action::class)
+            ->payload($payload)
+            ->customKey('veryCoolCustomKey')
+            ->get();
+
+        $this->assertDatabaseHas('signatures', ['key' => 'veryCoolCustomKey']);
+
+        $this->expectException(KeyAlreadyExists::class);
+        SignatureFacade::make(Action::class)
+            ->payload($payload)
+            ->customKey('veryCoolCustomKey')
+            ->get();
+    }
+
+    /** @test */
+    public function signature_will_use_custom_key()
+    {
+        $url = SignatureFacade::make(Action::class, [])
+            ->longerKey()
+            ->customKey('veryCoolCustomKey')
+            ->get();
+
+        $this->assertDatabaseHas('signatures', ['key' => 'veryCoolCustomKey']);
+    }
+
+    /** @test */
+    public function signature_will_use_longer_key()
+    {
+        $url = SignatureFacade::make(Action::class, [])
+            ->customKey('veryCoolCustomKey')
+            ->longerKey()
+            ->get();
+
+        $this->assertDatabaseHas('signatures', ['key' => $this->getKey($url)]);
+    }
+
+    /** @test */
+    public function singature_custom_key_cant_exceed_max_length_of_254()
+    {
+        $this->expectException(KeyIsTooLong::class);
+        SignatureFacade::make(Action::class, [])
+            ->customKey('241234817249874510928374129834712093857498471230984172340985237450918237410298347120938723469081723490812745089327419083475120948573029853487562987456234985762398716295871645872364591827363789456897351235785623948756123987526345987126359876419827364192837461298475619387534');
     }
 }
