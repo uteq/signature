@@ -55,9 +55,9 @@ return [
     'action_route' => '/action/{key}',
     
     /*
-    * Here you can define the actions, for example: 'action => '\App\SignatureActions\Action'
-    * When making a url you can provide the key instead of the class path, when using the example above it would look like
-    * SignatureFacade::make('action', $payload)->get();
+    * Here you can optionaly define the actions, for example: 'action => '\App\SignatureActions\Action'
+    * When making a url you can provide the key instead of the class path, 
+    * when using the example above it would look like SignatureFacade::make('action', $payload)->get();
     */
     'actions' => [
         
@@ -66,7 +66,7 @@ return [
 ```
 
 ## Usage
-  You can create a link with the examples provided below. 
+  You can create a link with the examples provided below. All options are optional and can be used independently.
 ``` php
 $urlExample = SignatureFacade::make(Action::class)
     ->payload(['variable_1' => 'information', 'variable_2' => 'even more information'])
@@ -84,13 +84,13 @@ $customKeyExample = SignatureFacade::make(Action::class)
     ->customKey('veryCoolCustomKey')
     ->get();
 ```
-- payload(): Alternative way to pass variables to the link
+- payload(): Alternative way to pass variables to the link 
 - expirationDate(): Option to allow you to specify the expiration date (defaults to 2 weeks from creating the link)
 - password(): Protects the link by asking for the password set in this function when using the link
 - oneTimeLink(): Deletes the link when the action has successfully executed
 - get(): Makes a complete url based on the APP_URL in the .env file and the 'action_route' in the signature config (defaults to /action/{key})
 
-- longerKey(): uses a longer key in the url with changeable length (max 254). This is recommended when handling sensitive data.
+- longerKey(): uses a longer key in the url with changeable length (max. 254). This is recommended when handling sensitive data.
 - group(): groups signatures together via the string given to the function, when a signature is deleted, all signatures with the same group also get deleted.
 
 - customKey(): grants the ability to use a custom key, if both longerKey() and customKey() are used in the same signature, the last function will override the other.

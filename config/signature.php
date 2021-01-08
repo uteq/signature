@@ -9,7 +9,7 @@ return [
     'validate_password_route' => '/validate-action-password/{signature}',
 
     /*
-    * Here you can define the actions, for example: 'action => '\App\SignatureActions\Action'
+    * Here you can optionally define the actions, for example: 'action => '\App\SignatureActions\Action'
     * When making a url you will need to provide the key instead of the class path, in the example above it would look like
     * SignatureFacade::make('action', [])->get();
     */
