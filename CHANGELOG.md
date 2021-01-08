@@ -9,3 +9,7 @@ All notable changes to `signature` will be documented in this file
 ## 1.0.1 - 2020-12-21
 
 - Small updates to the README.md
+
+## 1.1.0 - 2020-01-08
+
+ - Added new function customKey()
