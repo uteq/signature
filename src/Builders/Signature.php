@@ -96,7 +96,10 @@ class Signature
         } else {
             $key = (string)Str::uuid();
         }
-        if(app(KeyExists::class)($key)) { return $this->getKey();};
+        if (app(KeyExists::class)($key)) {
+            return $this->getKey();
+        };
+
         return $key;
     }
 

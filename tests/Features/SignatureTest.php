@@ -189,7 +189,6 @@ class SignatureTest extends TestCase
         $this->assertDatabaseHas('signatures', ['key' => 'veryCoolCustomKey']);
 
         $this->get($url)->assertOk()->assertJson($payload);
-
     }
 
     /** @test */
